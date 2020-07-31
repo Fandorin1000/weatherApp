@@ -45,17 +45,17 @@ const Weather = props => {
   return (
     <div className={classes.weather}>
       {weather}
-      {errorData ?
+      {isWeatherUpdating && <Spinner />}
+      {errorData &&
         <Auxiliary>
           <div className={classes.error}>
             <p>{errorData}</p>
             <button
-              onClick={() => { console.log('clicked') }}>
+              onClick={updateWeatherData}>
               Try to get the current weather
-        </button>
+            </button>
           </div>
-
-        </Auxiliary> : null}
+        </Auxiliary>}
     </div>
   )
 }

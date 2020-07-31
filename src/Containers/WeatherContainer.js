@@ -21,10 +21,12 @@ class WeatherContainer extends Component {
     this.props.onGetWeather()
   }
   shouldComponentUpdate(nextProps) {
-    const { isLoading, isWeatherUpdating } = this.props;
+    const { isLoading, isWeatherUpdating, errorData } = this.props;
+    console.log(nextProps.errorData)
     if (
       isLoading !== nextProps.isLoading ||
-      isWeatherUpdating !== nextProps.isWeatherUpdating
+      isWeatherUpdating !== nextProps.isWeatherUpdating ||
+      errorData !== nextProps.errorData
     ) {
       return true;
     }

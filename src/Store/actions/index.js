@@ -6,5 +6,6 @@ export {
 export {
   toggleIsLoading,
   toggleIsWeatherUpdating,
-  setError
+  setError,
+  clearError
 } from './UIAction.js';

@@ -11,6 +11,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.TOGGLE_IS_LOADING: return { ...state, isLoading: action.isLoading }
     case actionTypes.TOGGLE_IS_WEATHER_UPDATING: return { ...state, isWeatherUpdating: action.isWeatherUpdating }
     case actionTypes.SET_ERROR: return { ...state, errorData: action.errorData }
+    case actionTypes.CLEAR_ERROR: return { ...state, errorData: action.null }
     default: return state;
   }
 }

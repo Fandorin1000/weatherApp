@@ -21,6 +21,7 @@ const getIconRequest = data => async dispatch => {
 export const getWeatherRequest = () => async dispatch => {
   dispatch(actions.toggleIsLoading(true));
   try {
+    dispatch(actions.clearError())
     const response = await axios.get('users');
     await dispatch(getIconRequest(response.data.weather[0].icon));
     await dispatch(weatherRequestSuccess(response.data));
@@ -36,7 +37,8 @@ export const getWeatherRequest = () => async dispatch => {
 export const updateWeatherRequest = () => async dispatch => {
   dispatch(actions.toggleIsWeatherUpdating(true));
   try {
-    const response = await axios.get();
+    dispatch(actions.clearError());
+    const response = await axios.get('users');
     await dispatch(getIconRequest(response.data.weather[0].icon));
     await dispatch(weatherRequestSuccess(response.data));
     dispatch(actions.toggleIsWeatherUpdating(false));
