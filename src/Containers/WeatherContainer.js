@@ -5,12 +5,14 @@ import { connect } from 'react-redux';
 import * as actions from '../Store/actions/index';
 import {
   getWeatherDataSelector,
-  getIconSrcSelector
+  getIconSrcSelector,
+  getIsKnowCurrentUserLocationSelector
 } from '../Store/selectors/weatherSelectors';
 import {
   getIsLoadingSelector,
   getIsWeatherUpdatingSelector,
-  getErrorDataSelector
+  getErrorDataSelector,
+
 } from '../Store/selectors/UISelectors';
 
 class WeatherContainer extends Component {
@@ -18,28 +20,35 @@ class WeatherContainer extends Component {
   //   super(props);
   // }
   componentDidMount() {
-    this.props.onGetWeather()
+    navigator.geolocation.getCurrentPosition(position => {
+      this.props.onGetWeather(position.coords);
+    })
+    this.props.onGetWeather();
   }
   shouldComponentUpdate(nextProps) {
-    const { isLoading, isWeatherUpdating, errorData } = this.props;
-    console.log(nextProps.errorData)
+    const { isLoading, isWeatherUpdating, errorData, weatherData } = this.props;
     if (
       isLoading !== nextProps.isLoading ||
       isWeatherUpdating !== nextProps.isWeatherUpdating ||
-      errorData !== nextProps.errorData
+      errorData !== nextProps.errorData ||
+      weatherData !== nextProps.weatherData
     ) {
       return true;
     }
     return false;
   }
   updateWeatherData = () => {
+    navigator.geolocation.getCurrentPosition(position => {
+      console.log('enter update')
+      this.props.onUpdateWeatherData(position.coords);
+    })
     this.props.onUpdateWeatherData()
   }
   errorReset = () => {
     this.props.onResetError()
   }
   render() {
-    const { weatherData, isLoading, iconSrc, isWeatherUpdating, errorData } = this.props;
+    const { weatherData, isLoading, iconSrc, isWeatherUpdating, errorData, isKnowCurrentUserLocation } = this.props;
     return (
       <div className={classes.weatherContainer}>
         <Weather
@@ -49,6 +58,7 @@ class WeatherContainer extends Component {
           isWeatherUpdating={isWeatherUpdating}
           updateWeatherData={this.updateWeatherData}
           errorData={errorData}
+          isKnowCurrentUserLocation={isKnowCurrentUserLocation}
         />
 
       </div>
@@ -61,13 +71,14 @@ const mapStateToProps = state => {
     isLoading: getIsLoadingSelector(state),
     iconSrc: getIconSrcSelector(state),
     isWeatherUpdating: getIsWeatherUpdatingSelector(state),
-    errorData: getErrorDataSelector(state)
+    errorData: getErrorDataSelector(state),
+    isKnowCurrentUserLocation: getIsKnowCurrentUserLocationSelector(state)
   }
 }
 const mapDispatchToProps = dispatch => {
   return {
-    onGetWeather: () => dispatch(actions.getWeatherRequest()),
-    onUpdateWeatherData: () => dispatch(actions.updateWeatherRequest())
+    onGetWeather: (coords) => dispatch(actions.getWeatherRequest(coords)),
+    onUpdateWeatherData: (coords) => dispatch(actions.updateWeatherRequest(coords))
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(WeatherContainer);

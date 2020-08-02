@@ -9,15 +9,21 @@ const Weather = props => {
     iconSrc,
     isWeatherUpdating,
     updateWeatherData,
-    errorData } = props;
+    errorData,
+    isKnowCurrentUserLocation } = props;
 
   let weather = null;
-  if (isLoading) {
+  if (!weatherData || isLoading) {
     weather = <Spinner />
   }
   if (weatherData) {
     weather = (
       <Auxiliary>
+        {isKnowCurrentUserLocation ?
+          null :
+          <p className={classes.error}>
+            Please, let the browser get your geolocation: default geolocation is Kyiv city
+          </p>}
         <p>{new Date().toLocaleDateString()}</p>
         <h2>{weatherData.name}</h2>
         <hr />
@@ -45,7 +51,6 @@ const Weather = props => {
   return (
     <div className={classes.weather}>
       {weather}
-      {isWeatherUpdating && <Spinner />}
       {errorData &&
         <Auxiliary>
           <div className={classes.error}>
