@@ -23,7 +23,9 @@ class WeatherContainer extends Component {
     navigator.geolocation.getCurrentPosition(position => {
       this.props.onGetWeather(position.coords);
     })
-    this.props.onGetWeather();
+    if (navigator.geolocation.getCurrentPosition(pos => console.log(pos)) === undefined) {
+      this.props.onGetWeather();
+    }
   }
   shouldComponentUpdate(nextProps) {
     const { isLoading, isWeatherUpdating, errorData, weatherData } = this.props;
@@ -41,7 +43,7 @@ class WeatherContainer extends Component {
     navigator.geolocation.getCurrentPosition(position => {
       this.props.onUpdateWeatherData(position.coords);
     })
-    this.props.onUpdateWeatherData()
+
   }
   errorReset = () => {
     this.props.onResetError()
