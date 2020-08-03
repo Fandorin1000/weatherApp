@@ -39,7 +39,6 @@ class WeatherContainer extends Component {
   }
   updateWeatherData = () => {
     navigator.geolocation.getCurrentPosition(position => {
-      console.log('enter update')
       this.props.onUpdateWeatherData(position.coords);
     })
     this.props.onUpdateWeatherData()

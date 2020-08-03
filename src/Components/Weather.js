@@ -12,7 +12,7 @@ const Weather = props => {
     errorData,
     isKnowCurrentUserLocation } = props;
 
-  let weather = null;
+  let weather;
   if (!weatherData || isLoading) {
     weather = <Spinner />
   }
