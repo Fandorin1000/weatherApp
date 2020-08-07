@@ -22,7 +22,6 @@ const Weather = ({
     lightTheme ?
       null :
       classes.lightBorder].join(' ');
-  console.log(cssClasses)
   let weather;
   if (!weatherData || isLoading) {
     weather = <Spinner />
