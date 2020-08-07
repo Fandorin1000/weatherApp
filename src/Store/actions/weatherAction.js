@@ -35,14 +35,16 @@ const checkCoords = coords => async dispatch => {
   }
   return response;
 }
-
-export const getWeatherRequest = (coords) => async dispatch => {
+const getWeatherRequest = (coords) => async dispatch => {
+  await dispatch(actions.clearError());
+  let response = await dispatch(checkCoords(coords));
+  await dispatch(getIconRequest(response.data.weather[0].icon));
+  await dispatch(weatherRequestSuccess(response.data));
+}
+export const getWeatherAll = (coords) => async dispatch => {
   await dispatch(actions.toggleIsLoading(true));
   try {
-    await dispatch(actions.clearError());
-    let response = await dispatch(checkCoords(coords));
-    await dispatch(getIconRequest(response.data.weather[0].icon));
-    await dispatch(weatherRequestSuccess(response.data));
+    await dispatch(getWeatherRequest(coords))
     await dispatch(actions.toggleIsLoading(false));
   }
   catch (error) {
@@ -51,13 +53,10 @@ export const getWeatherRequest = (coords) => async dispatch => {
   }
 }
 
-export const updateWeatherRequest = (coords = undefined) => async dispatch => {
+export const updateWeatherAll = (coords) => async dispatch => {
   await dispatch(actions.toggleIsWeatherUpdating(true));
   try {
-    await dispatch(actions.clearError());
-    let response = await dispatch(checkCoords(coords));
-    await dispatch(getIconRequest(response.data.weather[0].icon));
-    await dispatch(weatherRequestSuccess(response.data));
+    await dispatch(getWeatherRequest(coords))
     await dispatch(actions.toggleIsWeatherUpdating(false));
   }
   catch (error) {

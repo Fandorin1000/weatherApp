@@ -1,11 +1,12 @@
 export {
-  getWeatherRequest,
-  updateWeatherRequest
+  getWeatherAll,
+  updateWeatherAll
 } from './weatherAction';
 
 export {
   toggleIsLoading,
   toggleIsWeatherUpdating,
   setError,
-  clearError
+  clearError,
+  toggleTheme
 } from './UIAction.js';

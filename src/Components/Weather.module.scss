@@ -1,21 +1,18 @@
+@import '../Styles/colors.scss';
+
 .weather {
   max-width: 600px;
   min-width: 300px;
-  border: 1px solid greenyellow;
-  box-shadow: 0 1px 2px greenyellow;
-  transition: 0.3s ease-out;
+  border: 2px solid $border-color;
+  transition: 0.5s all ease-out;
   text-align: center;
   box-sizing: border-box;
   border-radius: 5px;
-
   padding: 10px;
 
-  &:hover {
-    box-shadow: 2px 2px 4px greenyellow;
-  }
 
   hr {
-    background-color: greenyellow;
+    background-color: $border-color;
     border: none;
     height: 1px;
     outline: none;
@@ -26,8 +23,22 @@
   }
 
   .error {
-    color: red;
-    font-size: 24px;
+    color: $border-danger-color;
+    font-size: 12px;
     font-weight: 900;
   }
+}
+
+.lightBorder {
+  border: 2px solid yellow;
+}
+
+.dangerBorder {
+  border: 1px solid $border-danger-color;
+
+  hr {
+    background-color: $border-danger-color;
+  }
+
+
 }

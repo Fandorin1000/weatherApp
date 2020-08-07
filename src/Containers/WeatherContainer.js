@@ -12,7 +12,7 @@ import {
   getIsLoadingSelector,
   getIsWeatherUpdatingSelector,
   getErrorDataSelector,
-
+  getThemeSelector
 } from '../Store/selectors/UISelectors';
 
 class WeatherContainer extends Component {
@@ -20,36 +20,61 @@ class WeatherContainer extends Component {
   //   super(props);
   // }
   componentDidMount() {
-    navigator.geolocation.getCurrentPosition(position => {
-      this.props.onGetWeather(position.coords);
-    })
-    if (navigator.geolocation.getCurrentPosition(pos => console.log(pos)) === undefined) {
-      this.props.onGetWeather();
-    }
+    const location = navigator.geolocation;
+    location.getCurrentPosition(pos => this.props.onGetWeather(pos.coords),
+      () => this.props.onGetWeather()
+    );
+    this.checkTheme()
   }
   shouldComponentUpdate(nextProps) {
-    const { isLoading, isWeatherUpdating, errorData, weatherData } = this.props;
+    const {
+      isLoading,
+      isWeatherUpdating,
+      errorData,
+      weatherData,
+      lightTheme } = this.props;
     if (
       isLoading !== nextProps.isLoading ||
       isWeatherUpdating !== nextProps.isWeatherUpdating ||
       errorData !== nextProps.errorData ||
-      weatherData !== nextProps.weatherData
+      weatherData !== nextProps.weatherData ||
+      lightTheme !== nextProps.lightTheme
     ) {
       return true;
     }
     return false;
   }
+  checkTheme = () => {
+    const date = new Date()
+    const currentTime = new Date(date).getHours()
+    const conditionDate = new Date(date);
+    conditionDate.setHours(20);
+    const conditionTime = conditionDate.getHours()
+    if (currentTime > conditionTime) {
+      this.props.onToggleTheme()
+    }
+  }
   updateWeatherData = () => {
-    navigator.geolocation.getCurrentPosition(position => {
-      this.props.onUpdateWeatherData(position.coords);
-    })
+    const location = navigator.geolocation;
+    location.getCurrentPosition(pos => this.props.onUpdateWeatherData(pos.coords),
+      () => this.props.onUpdateWeatherData()
+    )
 
   }
-  errorReset = () => {
-    this.props.onResetError()
+  toggleThemeHandler = () => {
+    this.props.onToggleTheme()
   }
+  errorReset = () => this.props.onResetError();
   render() {
-    const { weatherData, isLoading, iconSrc, isWeatherUpdating, errorData, isKnowCurrentUserLocation } = this.props;
+    const {
+      weatherData,
+      isLoading,
+      iconSrc,
+      isWeatherUpdating,
+      errorData,
+      isKnowCurrentUserLocation,
+      lightTheme
+    } = this.props;
     return (
       <div className={classes.weatherContainer}>
         <Weather
@@ -60,8 +85,9 @@ class WeatherContainer extends Component {
           updateWeatherData={this.updateWeatherData}
           errorData={errorData}
           isKnowCurrentUserLocation={isKnowCurrentUserLocation}
+          toggleTheme={this.toggleThemeHandler}
+          lightTheme={lightTheme}
         />
-
       </div>
     )
   }
@@ -73,13 +99,15 @@ const mapStateToProps = state => {
     iconSrc: getIconSrcSelector(state),
     isWeatherUpdating: getIsWeatherUpdatingSelector(state),
     errorData: getErrorDataSelector(state),
-    isKnowCurrentUserLocation: getIsKnowCurrentUserLocationSelector(state)
+    isKnowCurrentUserLocation: getIsKnowCurrentUserLocationSelector(state),
+    lightTheme: getThemeSelector(state)
   }
 }
 const mapDispatchToProps = dispatch => {
   return {
-    onGetWeather: (coords) => dispatch(actions.getWeatherRequest(coords)),
-    onUpdateWeatherData: (coords) => dispatch(actions.updateWeatherRequest(coords))
+    onGetWeather: (coords) => dispatch(actions.getWeatherAll(coords)),
+    onUpdateWeatherData: (coords) => dispatch(actions.updateWeatherAll(coords)),
+    onToggleTheme: () => dispatch(actions.toggleTheme())
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(WeatherContainer);

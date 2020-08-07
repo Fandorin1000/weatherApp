@@ -4,7 +4,8 @@ import { updatedObject } from '../../utility/updatedObject';
 const initialState = {
   isLoading: false,
   isWeatherUpdating: false,
-  errorData: null
+  errorData: null,
+  lightTheme: true
 }
 
 const toggleIsLoading = (state, action) => {
@@ -22,13 +23,16 @@ const setError = (state, action) => {
 const clearError = (state) => {
   return updatedObject(state, { errorData: null })
 }
-
+const toggleTheme = (state) => {
+  return updatedObject(state, { lightTheme: !state.lightTheme })
+}
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.TOGGLE_IS_LOADING: return toggleIsLoading(state, action)
     case actionTypes.TOGGLE_IS_WEATHER_UPDATING: return toggleIsWeatherUpdating(state, action)
     case actionTypes.SET_ERROR: return setError(state, action)
     case actionTypes.CLEAR_ERROR: return clearError(state, action)
+    case actionTypes.TOGGLE_THEME: return toggleTheme(state, action)
     default: return state;
   }
 }

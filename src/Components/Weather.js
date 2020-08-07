@@ -2,16 +2,27 @@ import React from 'react';
 import classes from './Weather.module.scss';
 import Auxiliary from '../hoc/Auxiliary/Auxiliary';
 import Spinner from './UI/Spinner';
-const Weather = props => {
-  const {
-    weatherData,
-    isLoading,
-    iconSrc,
-    isWeatherUpdating,
-    updateWeatherData,
-    errorData,
-    isKnowCurrentUserLocation } = props;
 
+const Weather = ({
+  weatherData,
+  isLoading,
+  iconSrc,
+  isWeatherUpdating,
+  updateWeatherData,
+  errorData,
+  isKnowCurrentUserLocation,
+  toggleTheme,
+  lightTheme
+}) => {
+  let cssClasses = [
+    classes.weather,
+    isKnowCurrentUserLocation ?
+      null :
+      classes.dangerBorder,
+    lightTheme ?
+      null :
+      classes.lightBorder].join(' ');
+  console.log(cssClasses)
   let weather;
   if (!weatherData || isLoading) {
     weather = <Spinner />
@@ -22,7 +33,8 @@ const Weather = props => {
         {isKnowCurrentUserLocation ?
           null :
           <p className={classes.error}>
-            Please, let the browser get your geolocation: default geolocation is Kyiv city
+            Please, let the browser get your geolocation:<br />
+             default geolocation is Kyiv city
           </p>}
         <p>{new Date().toLocaleDateString()}</p>
         <h2>{weatherData.name}</h2>
@@ -45,11 +57,17 @@ const Weather = props => {
             'Updating...' :
             'Get current weather'}
         </button>
+        <div>
+          <button
+            onClick={toggleTheme}
+          >Change theme</button>
+        </div>
+
       </Auxiliary>
     )
   }
   return (
-    <div className={classes.weather}>
+    <div className={cssClasses}>
       {weather}
       {errorData &&
         <Auxiliary>

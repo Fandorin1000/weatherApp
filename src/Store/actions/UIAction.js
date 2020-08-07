@@ -7,3 +7,5 @@ export const toggleIsWeatherUpdating = isWeatherUpdating => ({
 })
 export const setError = errorData => ({ type: actionTypes.SET_ERROR, errorData });
 export const clearError = () => ({ type: actionTypes.CLEAR_ERROR, errorData: null });
+
+export const toggleTheme = () => ({ type: actionTypes.TOGGLE_THEME });
