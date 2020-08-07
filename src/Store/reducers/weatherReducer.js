@@ -4,7 +4,7 @@ import { updatedObject } from '../../utility/updatedObject';
 const initialState = {
   weatherData: null,
   iconSrc: null,
-  isKnowCurrentUserLocation: false
+  isKnowCurrentUserLocation: true
 }
 
 const setWeather = (state, action) => {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import classes from './WeatherContainer.module.scss';
 import Weather from '../Components/Weather/Weather';
 import { connect } from 'react-redux';
@@ -15,7 +15,7 @@ import {
   getThemeSelector
 } from '../Store/selectors/UISelectors';
 
-class WeatherContainer extends Component {
+class WeatherContainer extends PureComponent {
   // constructor(props) {
   //   super(props);
   // }
@@ -24,42 +24,25 @@ class WeatherContainer extends Component {
     location.getCurrentPosition(pos => this.props.onGetWeather(pos.coords),
       () => this.props.onGetWeather()
     );
-    this.checkTheme()
+    this.checkThemeHandler()
   }
-  shouldComponentUpdate(nextProps) {
-    const {
-      isLoading,
-      isWeatherUpdating,
-      errorData,
-      weatherData,
-      lightTheme } = this.props;
-    if (
-      isLoading !== nextProps.isLoading ||
-      isWeatherUpdating !== nextProps.isWeatherUpdating ||
-      errorData !== nextProps.errorData ||
-      weatherData !== nextProps.weatherData ||
-      lightTheme !== nextProps.lightTheme
-    ) {
-      return true;
-    }
-    return false;
-  }
-  checkTheme = () => {
+
+  checkThemeHandler = () => {
+
     const date = new Date()
     const currentTime = new Date(date).getHours()
     const conditionDate = new Date(date);
     conditionDate.setHours(20);
     const conditionTime = conditionDate.getHours()
-    if (currentTime > conditionTime) {
-      this.props.onToggleTheme()
+    if (currentTime >= conditionTime) {
+      this.toggleThemeHandler()
     }
   }
-  updateWeatherData = () => {
+  updateWeatherDataHandler = () => {
     const location = navigator.geolocation;
     location.getCurrentPosition(pos => this.props.onUpdateWeatherData(pos.coords),
       () => this.props.onUpdateWeatherData()
     )
-
   }
   toggleThemeHandler = () => {
     this.props.onToggleTheme()
@@ -82,32 +65,28 @@ class WeatherContainer extends Component {
           isLoading={isLoading}
           iconSrc={iconSrc}
           isWeatherUpdating={isWeatherUpdating}
-          updateWeatherData={this.updateWeatherData}
           errorData={errorData}
           isKnowCurrentUserLocation={isKnowCurrentUserLocation}
-          toggleTheme={this.toggleThemeHandler}
           lightTheme={lightTheme}
+          updateWeatherData={this.updateWeatherDataHandler}
+          toggleTheme={this.toggleThemeHandler}
         />
       </div>
     )
   }
 }
-const mapStateToProps = state => {
-  return {
-    weatherData: getWeatherDataSelector(state),
-    isLoading: getIsLoadingSelector(state),
-    iconSrc: getIconSrcSelector(state),
-    isWeatherUpdating: getIsWeatherUpdatingSelector(state),
-    errorData: getErrorDataSelector(state),
-    isKnowCurrentUserLocation: getIsKnowCurrentUserLocationSelector(state),
-    lightTheme: getThemeSelector(state)
-  }
-}
-const mapDispatchToProps = dispatch => {
-  return {
-    onGetWeather: (coords) => dispatch(actions.getWeatherAll(coords)),
-    onUpdateWeatherData: (coords) => dispatch(actions.updateWeatherAll(coords)),
-    onToggleTheme: () => dispatch(actions.toggleTheme())
-  }
-}
+const mapStateToProps = state => ({
+  weatherData: getWeatherDataSelector(state),
+  isLoading: getIsLoadingSelector(state),
+  iconSrc: getIconSrcSelector(state),
+  isWeatherUpdating: getIsWeatherUpdatingSelector(state),
+  errorData: getErrorDataSelector(state),
+  isKnowCurrentUserLocation: getIsKnowCurrentUserLocationSelector(state),
+  lightTheme: getThemeSelector(state)
+})
+const mapDispatchToProps = dispatch => ({
+  onGetWeather: (coords) => dispatch(actions.getWeatherAll(coords)),
+  onUpdateWeatherData: (coords) => dispatch(actions.updateWeatherAll(coords)),
+  onToggleTheme: () => dispatch(actions.toggleTheme())
+})
 export default connect(mapStateToProps, mapDispatchToProps)(WeatherContainer);

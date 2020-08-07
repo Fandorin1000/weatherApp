@@ -16,12 +16,9 @@ const Weather = ({
 }) => {
   let cssClasses = [
     classes.weather,
-    isKnowCurrentUserLocation ?
-      null :
-      classes.dangerBorder,
-    lightTheme ?
-      null :
-      classes.lightBorder].join(' ');
+    !isKnowCurrentUserLocation && classes.dangerBorder,
+    !lightTheme && classes.lightBorder]
+    .join(' ');
   let weather;
   if (!weatherData || isLoading) {
     weather = <Spinner />
@@ -29,8 +26,7 @@ const Weather = ({
   if (weatherData) {
     weather = (
       <Auxiliary>
-        {isKnowCurrentUserLocation ?
-          null :
+        {!isKnowCurrentUserLocation &&
           <p className={classes.error}>
             Please, let the browser get your geolocation:<br />
              default geolocation is Kyiv city
@@ -61,7 +57,6 @@ const Weather = ({
             onClick={toggleTheme}
           >Change theme</button>
         </div>
-
       </Auxiliary>
     )
   }
