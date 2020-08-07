@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classes from './WeatherContainer.module.scss';
-import Weather from '../Components/Weather';
+import Weather from '../Components/Weather/Weather';
 import { connect } from 'react-redux';
 import * as actions from '../Store/actions/index';
 import {

@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from './Weather.module.scss';
-import Auxiliary from '../hoc/Auxiliary/Auxiliary';
-import Spinner from './UI/Spinner';
+import Auxiliary from '../../hoc/Auxiliary/Auxiliary';
+import Spinner from '../UI/Spinner';
 
 const Weather = ({
   weatherData,

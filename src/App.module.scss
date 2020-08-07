@@ -1,8 +1,10 @@
 @import './Styles/colors.scss';
 
 .app {
+  padding: 10px 0;
   transition: .5s all;
   background: #CBCBCA;
+  min-height: 100vh;
 }
 
 .inverse {
