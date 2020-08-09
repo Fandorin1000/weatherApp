@@ -1,8 +1,5 @@
 import axios from "axios";
 
-
-
-
 const weatherAPI = {
   getWeatherForID(id) {
     return axios.get(`https://api.openweathermap.org/data/2.5/weather?id=${id}&appid=fc6f5b080a29bd1146f5ab7fc1894991`);

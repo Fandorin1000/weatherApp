@@ -26,6 +26,7 @@ const Weather = ({
   if (weatherData) {
     weather = (
       <Auxiliary>
+        {/* if user don't let access to geolocation show this message */}
         {!isKnowCurrentUserLocation &&
           <p className={classes.error}>
             Please, let the browser get your geolocation:<br />
@@ -63,14 +64,11 @@ const Weather = ({
   return (
     <div className={cssClasses}>
       {weather}
+      {/* if get errorData show message for error */}
       {errorData &&
         <Auxiliary>
           <div className={classes.error}>
             <p>{errorData}</p>
-            <button
-              onClick={updateWeatherData}>
-              Try to get the current weather
-            </button>
           </div>
         </Auxiliary>}
     </div>

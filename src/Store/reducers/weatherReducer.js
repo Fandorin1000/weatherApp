@@ -16,6 +16,8 @@ const setIcon = (state, action) => {
 const toggleIsKnowCurrentUserLocation = (state, action) => {
   return updatedObject(state, { isKnowCurrentUserLocation: action.isKnowCurrentUserLocation })
 }
+
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_WEATHER: return setWeather(state, action)

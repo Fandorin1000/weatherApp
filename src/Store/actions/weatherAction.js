@@ -8,6 +8,7 @@ const weatherRequestSuccess = weatherData => ({ type: actionTypes.SET_WEATHER, w
 const iconRequestSuccess = iconSrc => ({ type: actionTypes.SET_ICON, iconSrc: iconSrc });
 
 const getIconRequest = data => async dispatch => {
+  //send request get icon for current weather
   try {
     const response = await weatherAPI.getIcon(data);
     await dispatch(iconRequestSuccess(response.config.url));
@@ -18,6 +19,7 @@ const getIconRequest = data => async dispatch => {
 }
 
 const toggleIsKnowCurrentUserLocation = (isKnowCurrentUserLocation) => {
+  //  was let user access for geolocation or not, set value 
   return {
     type: actionTypes.TOGGLE_IS_KNOW_CURRENT_USER_LOCATION,
     isKnowCurrentUserLocation
@@ -25,17 +27,20 @@ const toggleIsKnowCurrentUserLocation = (isKnowCurrentUserLocation) => {
 }
 
 const checkCoords = coords => async dispatch => {
+  //if get coords send request from current user geolocation
   let response;
   if (coords) {
     response = await weatherAPI.getWeatherForCoordinations(coords.latitude, coords.longitude);
     await dispatch(toggleIsKnowCurrentUserLocation(true))
   } else {
+    //if don't get coords send request from city id
     response = await weatherAPI.getWeatherForID(703448);
     await dispatch(toggleIsKnowCurrentUserLocation(false))
   }
   return response;
 }
 const getWeatherRequest = (coords) => async dispatch => {
+  //send request get weather data
   await dispatch(actions.clearError());
   let response = await dispatch(checkCoords(coords));
   await dispatch(getIconRequest(response.data.weather[0].icon));

@@ -20,34 +20,34 @@ class WeatherContainer extends PureComponent {
   //   super(props);
   // }
   componentDidMount() {
-    const location = navigator.geolocation;
-    location.getCurrentPosition(pos => this.props.onGetWeather(pos.coords),
-      () => this.props.onGetWeather()
-    );
+    // if let access to geolocation send request with user coordination
     this.checkThemeHandler()
+    this.props.onGetWeather()
+
+    const location = navigator.geolocation;
+    location.getCurrentPosition(pos => this.props.onGetWeather(pos.coords));
   }
 
   checkThemeHandler = () => {
-
+    // condition current time >= 20 hours invite night theme
     const date = new Date()
     const currentTime = new Date(date).getHours()
-    const conditionDate = new Date(date);
-    conditionDate.setHours(20);
-    const conditionTime = conditionDate.getHours()
+    const conditionTime = 10
     if (currentTime >= conditionTime) {
       this.toggleThemeHandler()
     }
   }
   updateWeatherDataHandler = () => {
+    //update weather Data
     const location = navigator.geolocation;
     location.getCurrentPosition(pos => this.props.onUpdateWeatherData(pos.coords),
       () => this.props.onUpdateWeatherData()
     )
   }
   toggleThemeHandler = () => {
+    //toggle night/light theme
     this.props.onToggleTheme()
   }
-  errorReset = () => this.props.onResetError();
   render() {
     const {
       weatherData,
