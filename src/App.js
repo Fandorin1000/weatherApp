@@ -9,7 +9,7 @@ class App extends Component {
 
   render() {
     const { lightTheme } = this.props;
-    let cssClasses = [classes.app, lightTheme ? null : classes.inverse].join(' ')
+    let cssClasses = [classes.app, !lightTheme && classes.inverse].join(' ')
     return (
       <div className={cssClasses}>
         <WeatherContainer />

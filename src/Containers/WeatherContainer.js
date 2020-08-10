@@ -23,7 +23,6 @@ class WeatherContainer extends PureComponent {
     // if let access to geolocation send request with user coordination
     this.checkThemeHandler()
     this.props.onGetWeather()
-
     const location = navigator.geolocation;
     location.getCurrentPosition(pos => this.props.onGetWeather(pos.coords));
   }
@@ -32,7 +31,7 @@ class WeatherContainer extends PureComponent {
     // condition current time >= 20 hours invite night theme
     const date = new Date()
     const currentTime = new Date(date).getHours()
-    const conditionTime = 10
+    const conditionTime = 20
     if (currentTime >= conditionTime) {
       this.toggleThemeHandler()
     }
