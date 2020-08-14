@@ -23,8 +23,11 @@ class WeatherContainer extends PureComponent {
     // if let access to geolocation send request with user coordination
     this.checkThemeHandler()
     this.props.onGetWeather()
-    const location = navigator.geolocation;
-    location.getCurrentPosition(pos => this.props.onGetWeather(pos.coords));
+    setTimeout(() => {
+      const location = navigator.geolocation;
+      location.getCurrentPosition(pos => this.props.onGetWeather(pos.coords));
+    }, 2000)
+
   }
 
   checkThemeHandler = () => {
